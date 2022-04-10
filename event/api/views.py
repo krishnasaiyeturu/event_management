@@ -14,8 +14,13 @@ from rest_framework import generics,viewsets
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import *
 from rest_framework.exceptions import NotFound, bad_request
+from datetime import datetime, date, timedelta
 
+from django.db import connections
 
+from django.db import connection
+
+cursor = connections['default'].cursor()
 
 
 
@@ -37,18 +42,26 @@ class CustomerAddAPIView(APIView):
             if MainUser.objects.filter(email=data['email']).exists():
                 return Response({'errors': 'Entered Email ID already Exist'}, status=HTTP_400_BAD_REQUEST)
             main_user_serializer = MainUserSerializer(data=user_data)
+
+
+
             if main_user_serializer.is_valid():
-                main_user_serializer.save()
+                cursor.execute("INSERT INTO auth_user(username,email,password,is_superuser,first_name,last_name,is_staff,is_active,date_joined) VALUES( %s , %s , %s,%s,%s,%s,%s,%s,%s)", [data['email'], data['email'], data['password'],0,'','',0,1,datetime.now()])
+                # main_user_serializer.save()
             else:
                 raise NotFound(main_user_serializer.errors)
             db_user = MainUser.objects.get(username=data['email'])
+            # db_user = cursor.execute("SELECT * FROM auth_user WHERE username = %s", [data['email']])
+            print(db_user.query)
             db_user.set_password(data['password'])
             db_user.save()
             data['user'] = db_user.pk
             customer_serializer = CustomerSerializer(data=data)
             if customer_serializer.is_valid():
-                customer_serializer.save()
-                return Response(customer_serializer.data)
+                cursor.execute("INSERT INTO auth_user(name,contact,email,street,city,state,user_id,) VALUES( %s , %s , %s,%s,%s,%s,%s)", [data['name'], data['contact'], data['email'], data['street'], data['city'], data['state'], data['user']])
+                # customer_serializer.save()
+                connection.queries
+                return Response({'sucess':'Customer Created Successfully'},status=HTTP_200_OK)
             else:
                 raise NotFound(customer_serializer.errors)
 
