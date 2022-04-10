@@ -11,7 +11,7 @@ from . import views
 
 urlpatterns = [
 
-    url('login', views.login),
+    url(r'^login', views.login),
     url(r'^logout/$', views.logout_view),
 
     url(r'^dashboard', views.index),
