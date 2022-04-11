@@ -17,6 +17,7 @@ section {
   padding: 20px;
 }
 
+
 section .container {
   position: relative;
   width: 800px;
@@ -84,7 +85,7 @@ section .container .user .formBx form input {
   border: none;
   outline: none;
   box-shadow: none;
-  margin: 8px 0;
+  margin: 3px 0;
   font-size: 14px;
   letter-spacing: 1px;
   font-weight: 300;

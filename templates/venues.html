@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+
+
+</head>
+<body>
+    {% include 'side_nav.html' %}
+
+
+    <!-- Main Wrapper -->
+    <div class="p-1 my-container active-cont">
+        {% include 'header.html' %}
+        <section class="content-header">
+            <div class="container-fluid">
+              <div class="row mb-2">
+                <div class="col-sm-6 col-md-6">
+                  <h1>Manage Venues</h1>
+                </div>
+               
+              </div>
+            </div>
+            <!-- /.container-fluid -->
+          </section>
+
+          <section class="content">
+            <div class="row">
+              <div class="col-12">
+    
+                <!-- /.card -->
+    
+                <div class="card">
+                  <div class="container mt-3">
+                    <ul class="nav nav-tabs">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#EventTypeTab">Add Venues</a>
+                      </li>
+                     
+                    </ul>
+    
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                      <div id="EventTypeTab" class="container tab-pane active"><br>
+    
+                        <div class="card-body">
+                          <div class="container">
+                            <div class="card col-md-12 p-2 mb-4">
+                             
+                              
+                                 <form action="" method="post">
+                                    <div class="row ">
+                                     <div class="col-md-4 form-group">
+                                     <small style="text-align: left; display: block;color: #7E8388">Name</small>
+                                     <input type="text" name="name" id="" required class="form-control">
+                                     </div>
+
+                                     <div class="col-md-4 form-group">
+                                        <small style="text-align: left; display: block;color: #7E8388">Street</small>
+                                        <input type="text" name="street" id="" required class="form-control">
+                                        </div>
+
+                                        <div class="col-md-4 form-group">
+                                            <small style="text-align: left; display: block;color: #7E8388">City</small>
+                                            <input type="text" name="city" id="" required class="form-control">
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <small style="text-align: left; display: block;color: #7E8388">Price per day</small>
+                                                <input type="number" name="price_per_day" id="" required class="form-control">
+                                                </div>
+
+                                                <div class="col-md-4 form-group">
+                                                    <small style="text-align: left; display: block;color: #7E8388">People accomodate</small>
+                                                    <input type="number" name="people_accomadate" id="" required class="form-control">
+                                                    </div>
+                                     
+                                     </div>
+                                     <div class="row mt-4">
+                                        <div class="col-md-3"  style="margin: auto;">
+                                            <button class="btn btn-success">Save</button>
+                                         </div>
+                                     </div>
+                                   
+                                     
+                                 </form>
+                                <!-- </form> -->
+                              
+                            </div>
+
+
+                            <!-- datatable -->
+                            <table id="example" class="table table-striped mt-4" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Street </th>
+                                        <th>City</th>
+                                        <th>Price per day</th>
+                                        <th>People accomodate</th>
+                                        <th>Operate</th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Bhagatg</td>
+                                        <td>Street </td>
+                                        <td>City</td>
+                                        <td>Price per day</td>
+                                        <td>People accomodate</td>
+                                        <td  data-toggle="modal" data-toggle="modal" data-target="#exampleModal"><span class="iconify" data-icon="bx:edit" style="    font-size: 20px;
+                                            color: blue;
+                                        cursor:pointer"></span></td>
+                                    </tr>
+                                </tbody>
+                             
+                            </table>
+                            <!-- end datatable -->
+                          </div>
+    
+                        </div>
+    
+                      </div>
+                      <!-- EventType Tab end -->
+                    </div>
+                    <!-- Tab panes -->
+    
+                    <!-- /.card -->
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+
+                
+       
+          </section>
+
+          <!-- Button trigger modal -->
+          <div class="container mt-5">
+            <!-- Button trigger modal -->
+    <!-- <button type="button" class="btn btn-outline-success btn-lg float-right" data-toggle="modal" data-target="#exampleModal">
+        Open Modal
+      </button> -->
+      
+      <!-- Modal -->
+
+        
+    </div>
+
+
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel">Edit Venue</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="put">
+                    <div class="row ">
+                     <div class="col-md-12 form-group">
+                     <small style="text-align: left; display: block;color: #7E8388">Name</small>
+                     <input type="text" name="name" id="" required class="form-control">
+                     </div>
+
+                     <div class="col-md-12 form-group">
+                        <small style="text-align: left; display: block;color: #7E8388">Street</small>
+                        <input type="text" name="street" id="" required class="form-control">
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <small style="text-align: left; display: block;color: #7E8388">City</small>
+                            <input type="text" name="city" id="" required class="form-control">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <small style="text-align: left; display: block;color: #7E8388">Price per day</small>
+                                <input type="number" name="price_per_day" id="" required class="form-control">
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <small style="text-align: left; display: block;color: #7E8388">People accomodate</small>
+                                    <input type="number" name="people_accomadate" id="" required class="form-control">
+                                    </div>
+                     
+                     </div>
+                     <!-- <div class="row mt-4">
+                        <div class="col-md-3"  style="margin: auto;">
+                            <button class="btn btn-success">Save</button>
+                         </div>
+                     </div> -->
+                   
+                     
+                 </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success">Save</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+    $('#example').DataTable();
+} );
+
+
+    </script>
+</body>
+</html>

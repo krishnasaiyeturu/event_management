@@ -24,3 +24,11 @@ def logout_view(request):
 def index(request):
     return render(request,'index.html')
 
+def event(request):
+    return render(request,'event.html')
+
+def venues(request):
+    return render(request,'venues.html')
+
+def prices(request):
+    return render(request,'prices.html')

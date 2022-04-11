@@ -15,5 +15,7 @@ urlpatterns = [
     url(r'^logout/$', views.logout_view),
 
     url(r'^dashboard', views.index),
-
+    url(r'^event',views.event),
+    url(r'^venues',views.venues),
+    url(r'^prices',views.prices),
 ]

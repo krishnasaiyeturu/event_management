@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+
+<style>
+    td{
+        vertical-align: middle;
+    }
+</style>
+</head>
+<body>
+    {% include 'side_nav.html' %}
+
+
+    <!-- Main Wrapper -->
+    <div class="p-1 my-container active-cont">
+        {% include 'header.html' %}
+        <section class="content-header">
+            <div class="container-fluid">
+              <div class="row mb-2">
+                <div class="col-sm-6 col-md-6">
+                  <h1>Manage Prices</h1>
+                </div>
+               
+              </div>
+            </div>
+            <!-- /.container-fluid -->
+          </section>
+
+          <section class="content">
+            <div class="row">
+              <div class="col-12">
+    
+                <!-- /.card -->
+    
+                <div class="card">
+                  <div class="container mt-3">
+                    <ul class="nav nav-tabs">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#EventTypeTab">Add Venues</a>
+                      </li>
+                     
+                    </ul>
+    
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                      <div id="EventTypeTab" class="container tab-pane active"><br>
+    
+                        <div class="card-body">
+                          <div class="container">
+                            <div class="card col-md-12 p-2 mb-4">
+                             
+                              
+                                 <!-- <form action="" method="post"> -->
+                                    <div class="row ">
+                                        <div class="form-group col-md-4">
+                                            <small style="text-align: left; display: block;color: #7E8388">Select Event Type</small>
+                                            <select class="form-control " name="branch" id="Event_Type" required>
+                                              <option value="">Select Event Type</option>
+                                            </select>
+                                          </div>
+                                          <div class="form-group col-md-4">
+                                            <small style="text-align: left; display: block;color: #7E8388">Select Venue</small>
+                                            <select class="form-control " name="venue" id="Venue" required>
+                                              <option value="">Select Venue</option>
+                                            </select>
+                                          </div>
+                                  
+
+                                     
+                                     </div>
+                                     <div class="row mt-4">
+                                        <div class="form-group col-md-4">
+                                            <small style="text-align: left; display: block;color: #7E8388">No of people</small>
+                                            <input type="number" name="no_of_people" id="" required class="form-control">
+                                          </div>
+                                          <div class="form-group col-md-4">
+                                            <small style="text-align: left; display: block;color: #7E8388">Amount</small>
+                                            <input type="number" name="amount" id="" required class="form-control">
+                                          </div>
+                                          <div class="col-md-3"  style="margin: auto;">
+                                            <button class="btn btn-success" onclick="addNewRow()">Add New Row</button>
+                                         </div>
+                                     </div>
+
+                                     <div id="newRow"></div>
+                                     <div class="row mt-4">
+                                        <div class="col-md-3"  style="margin: auto;">
+                                            <button type="submit" class="btn btn-success">Save</button>
+                                         </div>
+                                     </div>
+                                   
+                                     
+                                 <!-- </form> -->
+                                <!-- </form> -->
+                              
+                            </div>
+
+
+                            <!-- datatable -->
+                            <table id="example" class="table table-striped mt-4" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Event Type</th>
+                                        <th>Venue </th>
+                                        <th>No of people - Price</th>
+                                        <th>Operate</th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Bhagatg</td>
+                                        <td>Street </td>
+                                        <td>
+                                           <p>10 - $10</p> 
+                                           <p>20 - $15</p>
+                                        </td>
+                                      
+                                        <td  data-toggle="modal" data-toggle="modal" data-target="#exampleModal"><span class="iconify" data-icon="bx:edit" style="    font-size: 20px;
+                                            color: blue;
+                                        cursor:pointer"></span></td>
+                                    </tr>
+                                </tbody>
+                             
+                            </table>
+                            <!-- end datatable -->
+                          </div>
+    
+                        </div>
+    
+                      </div>
+                      <!-- EventType Tab end -->
+                    </div>
+                    <!-- Tab panes -->
+    
+                    <!-- /.card -->
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+
+                
+       
+          </section>
+
+          <!-- Button trigger modal -->
+          <div class="container mt-5">
+            <!-- Button trigger modal -->
+    <!-- <button type="button" class="btn btn-outline-success btn-lg float-right" data-toggle="modal" data-target="#exampleModal">
+        Open Modal
+      </button> -->
+      
+      <!-- Modal -->
+
+        
+    </div>
+
+
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel">Edit Prices</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                          <!-- <form action="" method="post"> -->
+                            <div class="row ">
+                                <div class="form-group col-md-4">
+                                    <small style="text-align: left; display: block;color: #7E8388">Select Event Type</small>
+                                    <select class="form-control " name="branch" id="Event_Type" required disabled>
+                                      <option value="">Select Event Type</option>
+                                    </select>
+                                  </div>
+                                  <div class="form-group col-md-4">
+                                    <small style="text-align: left; display: block;color: #7E8388">Select Venue</small>
+                                    <select class="form-control " name="venue" id="Venue" required disabled>
+                                      <option value="">Select Venue</option>
+                                    </select>
+                                  </div>
+                          
+
+                             
+                             </div>
+                             <div class="row mt-4">
+                                <div class="form-group col-md-4">
+                                    <small style="text-align: left; display: block;color: #7E8388">No of people</small>
+                                    <input type="number" name="no_of_people" id="" required class="form-control">
+                                  </div>
+                                  <div class="form-group col-md-4">
+                                    <small style="text-align: left; display: block;color: #7E8388">Amount</small>
+                                    <input type="number" name="amount" id="" required class="form-control">
+                                  </div>
+                                  <div class="col-md-3"  style="margin: auto;">
+                                    <button class="btn btn-success" onclick="addNewRowForEdit()">Add New Row</button>
+                                 </div>
+                             </div>
+
+                             <div id="editnewRow"></div>
+                             <div class="row mt-4">
+                                <div class="col-md-3"  style="margin: auto;">
+                                    <button type="submit" class="btn btn-success">Save</button>
+                                 </div>
+                             </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success">Save</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+    $('#example').DataTable();
+} );
+
+let i=0;
+
+function addNewRow(){
+    $('#newRow').append(`<div class="row mt-4">
+                                        <div class="form-group col-md-4">
+                                            <small style="text-align: left; display: block;color: #7E8388">No of people</small>
+                                            <input type="number" name="no_of_people" id="" required class="form-control">
+                                          </div>
+                                          <div class="form-group col-md-4">
+                                            <small style="text-align: left; display: block;color: #7E8388">Amount</small>
+                                            <input type="number" name="amount" id="" required class="form-control">
+                                          </div>
+                                          </div>`)
+
+                                     
+}
+
+function addNewRowForEdit(){
+    $('#editnewRow').append(`<div class="row mt-4">
+                                        <div class="form-group col-md-4">
+                                            <small style="text-align: left; display: block;color: #7E8388">No of people</small>
+                                            <input type="number" name="no_of_people" id="" required class="form-control">
+                                          </div>
+                                          <div class="form-group col-md-4">
+                                            <small style="text-align: left; display: block;color: #7E8388">Amount</small>
+                                            <input type="number" name="amount" id="" required class="form-control">
+                                          </div>
+                                          </div>`)
+}
+    </script>
+</body>
+</html>
