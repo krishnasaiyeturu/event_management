@@ -32,3 +32,6 @@ def venues(request):
 
 def prices(request):
     return render(request,'prices.html')
+
+def book_event(request):
+    return render(request,'book_event.html')

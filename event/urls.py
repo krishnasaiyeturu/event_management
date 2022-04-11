@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^event',views.event),
     url(r'^venues',views.venues),
     url(r'^prices',views.prices),
+    url(r'^book_event',views.book_event),
 ]

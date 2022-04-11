@@ -189,7 +189,9 @@
                                     </select>
                                   </div>
                           
-
+                                  <div class="col-md-5 mt-4"  style="margin: auto;">
+                                    <button class="btn btn-success" onclick="addNewRowForEdit()">Add New Row</button>
+                                 </div>
                              
                              </div>
                              <div class="row mt-4">
@@ -201,22 +203,18 @@
                                     <small style="text-align: left; display: block;color: #7E8388">Amount</small>
                                     <input type="number" name="amount" id="" required class="form-control">
                                   </div>
-                                  <div class="col-md-3"  style="margin: auto;">
-                                    <button class="btn btn-success" onclick="addNewRowForEdit()">Add New Row</button>
+                                  <div class="col-md-3 mt-3"  style="margin: auto;">
+                                    <button class="btn btn-success" >Update</button>
                                  </div>
                              </div>
 
                              <div id="editnewRow"></div>
-                             <div class="row mt-4">
-                                <div class="col-md-3"  style="margin: auto;">
-                                    <button type="submit" class="btn btn-success">Save</button>
-                                 </div>
-                             </div>
+                             
             </div>
-            <div class="modal-footer">
+            <!-- <div class="modal-footer">
                 <button class="btn btn-success">Save</button>
               <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -258,6 +256,9 @@ function addNewRowForEdit(){
                                             <small style="text-align: left; display: block;color: #7E8388">Amount</small>
                                             <input type="number" name="amount" id="" required class="form-control">
                                           </div>
+                                          <div class="col-md-3 mt-3"  style="margin: auto;">
+                                    <button class="btn btn-success" >Save</button>
+                                 </div>
                                           </div>`)
 }
     </script>

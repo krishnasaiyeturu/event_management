@@ -5,7 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+<style>
+.display{
+  font-weight: 700;
 
+}
+.card{
+  background-color: blueviolet !important;
+    color: white;
+
+}
+</style>
  
 </head>
 <body>
@@ -16,10 +26,152 @@
     <!-- Main Wrapper -->
     <div class="p-1 my-container active-cont">
         {% include 'header.html' %}
-      <h3 class="text-dark p-3">RESPONSIVE SIDEBAR NAV 💻 📱
-      </h3>
-      <p class="px-3">Responsive navigation sidebar built using <a class="text-dark" href="https://getbootstrap.com/">Bootstrap 5</a>.</p>
+       
+        <div class="row mb-4">
+          <div class="form-group col-md-4">
+              <small style="text-align: left; display: block;color: #7E8388">Select</small>
+              <select class="form-control " name="branch" id="Event_Type" required>
+                <option value="" selected>Requested</option>
+                <option value="">Accepted</option>
+                <option value="">Rejected</option>
+              </select>
+            </div>
 
+            <div class="form-group col-md-4">
+              <small style="text-align: left; display: block;color: #7E8388">Filter Based on Date</small>
+               <input type="date" class="form-control">
+            </div>
+       </div>
+     <h5 class="mt-4">List of requests</h5>
+     <hr>
+       <div class="row ">
+       <!-- first card -->
+           <div class="col-md-6">
+            <div class="card">
+           <div class="card-body">
+             <div class="col-md-12">
+
+              <span>Event Type : </span> <span class="display">Hello</span>
+             </div>
+
+             <div class="col-md-12">
+
+              <span>Venue Address : </span> <span class="display">Hello.Hello Hello</span>
+             </div>
+            
+             <div class="col-md-12">
+
+              <span>Date of Event : </span> <span class="display">20/12/2022</span>
+             </div>
+             <div class="col-md-12">
+
+              <span>No of Participants : </span> <span class="display">100</span>
+             </div>
+
+             <div class="col-md-12">
+
+              <span>Duration : </span> <span class="display">100</span>
+             </div>
+             <div class="col-md-12">
+
+              <span>Estimated Price : </span> <span class="display">$100</span>
+             </div>
+             <div class="col-md-12">
+
+              <span>Customer Name : </span> <span class="display">Bhagath</span>
+             </div>
+             <div class="col-md-12">
+
+              <span>Customer Contact Number : </span> <span class="display">8790353282</span>
+             </div>
+             <div class="col-md-12">
+
+              <span>Status : </span> <span class="display">Not Accepted</span>
+             </div>
+<div class="row mt-4">
+  <div class="col-md-3"></div>
+  <div class="col-md-3">
+
+    <button class="btn btn-success"> Accept</button>
+   </div>
+   <div class="col-md-3">
+
+    <button class="btn btn-danger"> Reject</button>
+   </div>
+   <div class="col-md-3"></div>
+</div>
+            
+           </div>
+            </div>
+           
+           
+         </div>
+
+<!-- end of first card -->
+
+         <!-- second crd -->
+         <div class="col-md-6">
+          <div class="card">
+         <div class="card-body">
+           <div class="col-md-12">
+
+            <span>Event Type : </span> <span class="display">Hello</span>
+           </div>
+
+           <div class="col-md-12">
+
+            <span>Venue Address : </span> <span class="display">Hello.Hello Hello</span>
+           </div>
+          
+           <div class="col-md-12">
+
+            <span>Date of Event : </span> <span class="display">20/12/2022</span>
+           </div>
+           <div class="col-md-12">
+
+            <span>No of Participants : </span> <span class="display">100</span>
+           </div>
+
+           <div class="col-md-12">
+
+            <span>Duration : </span> <span class="display">100</span>
+           </div>
+           <div class="col-md-12">
+
+            <span>Estimated Price : </span> <span class="display">$100</span>
+           </div>
+           <div class="col-md-12">
+
+            <span>Customer Name : </span> <span class="display">Bhagath</span>
+           </div>
+           <div class="col-md-12">
+
+            <span>Customer Contact Number : </span> <span class="display">8790353282</span>
+           </div>
+           <div class="col-md-12">
+
+            <span>Status : </span> <span class="display">Not Accepted</span>
+           </div>
+           <div class="row mt-4">
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
+          
+              <button class="btn btn-success"> Accept</button>
+             </div>
+             <div class="col-md-3">
+          
+              <button class="btn btn-danger"> Reject</button>
+             </div>
+             <div class="col-md-3"></div>
+          </div>
+          
+         </div>
+          </div>
+         
+         
+       </div>
+         <!-- end of second card -->
+       </div>
     </div>
   
    
