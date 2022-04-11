@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/static/css/login.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
 </head>
 <body>
     <section>
@@ -13,10 +14,10 @@
         <div class="user signinBx">
           <div class="imgBx"><img src="https://raw.githubusercontent.com/WoojinFive/CSS_Playground/master/Responsive%20Login%20and%20Registration%20Form/img1.jpg" alt="" /></div>
           <div class="formBx">
-            <form action="" onsubmit="return false">
+            <form action="" id="login_form" method="post" >
               <h2>Sign In</h2>
-              <input type="email" name="" placeholder="Email Address" />
-              <input type="password" name="" placeholder="Password" />
+              <input type="email" name="email" placeholder="Email Address" />
+              <input type="password" name="password" placeholder="Password" />
               <input type="submit" name="" value="Login" />
               <p class="signup">
                 Don't have an account ?
@@ -27,20 +28,20 @@
         </div>
         <div class="user signupBx">
           <div class="formBx">
-            <form action="" onsubmit="return false">
+            <form action="" method="post" id="customer_register">
               <h2>Create an account</h2>
-              <input type="text" name="" placeholder="Username" />
-              <input type="email" name="" placeholder="Email Address" />
-              <input type="number" name="" placeholder="Enter Mobile Number" />
-              <input type="text" name="" placeholder="Street" />
-              <input type="text" name="" placeholder="City" />
-              <input type="text" name="" placeholder="State" />
-              <input type="password" name="" placeholder="Create Password" />
-              <input type="password" name="" placeholder="Confirm Password" />
+              <input type="text" name="name" placeholder="Username" />
+              <input type="email" name="email" placeholder="Email Address" />
+              <input type="number" name="contact" placeholder="Enter Mobile Number" />
+              <input type="text" name="street" placeholder="Street" />
+              <input type="text" name="city" placeholder="City" />
+              <input type="text" name="state" placeholder="State" />
+              <input type="password" name="password" placeholder="Create Password" />
+              <input type="password" name="confirm_password" placeholder="Confirm Password" />
               <input type="submit" name="" value="Sign Up" />
               <p class="signup">
                 Already have an account ?
-                <a href="#" onclick="toggleForm();">Sign in.</a>
+                <a href="#" onclick="toggleForm();" id="clickSignIn">Sign in.</a>
               </p>
             </form>
           </div>
@@ -51,5 +52,94 @@
 
   
     <script src="/static/js/login.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+    <script>
+
+var token = '{{csrf_token}}';
+$("#customer_register").submit(function (event) {
+   
+      event.preventDefault();
+      var form = $(this);
+      var action = form.attr("action");
+      var data = form.serializeArray();
+      $.ajax({
+        
+        type: "POST",
+        url: "/api/customer_add/",
+        dataType: 'json',
+        data: getFormData(data),
+        cache: false,
+        success: function (response, textStatus, xhr) {
+          var jsonarr = JSON.parse(JSON.stringify(response));
+
+          if (xhr.status === 200) {
+            
+            toastr.success('Added Successfully');
+            $("#customer_register").trigger('reset')
+            $('#clickSignIn').trigger('click')
+            
+          } else {
+            toastr.error("SomeThing Went Wrong");
+          
+          }
+        },
+        error: function (response, textStatus, xhr) {
+          let error;
+          var jsonarr = JSON.parse(JSON.stringify(response));
+          errorMessage(xhr, textStatus, response)
+         
+        }
+      });
+
+    });
+
+
+    $("#login_form").submit(function (event) {
+   
+   event.preventDefault();
+   var form = $(this);
+   var action = form.attr("action");
+   var data = form.serializeArray();
+   $.ajax({
+     
+     type: "POST",
+     url: "/api/login_api/",
+     dataType: 'json',
+     data: getFormData(data),
+     cache: false,
+     success: function (response, textStatus, xhr) {
+       var jsonarr = JSON.parse(JSON.stringify(response));
+
+       if (xhr.status === 200) {
+         toastr.success('LoggedIn Successfully');     
+         window.location='/dashboard'    
+       } else {
+         toastr.error("SomeThing Went Wrong");
+       }
+     },
+     error: function (response, textStatus, xhr) {
+       let error;
+       var jsonarr = JSON.parse(JSON.stringify(response));
+       errorMessage(xhr, textStatus, response)
+      
+     }
+   });
+
+ });
+
+
+    function getFormData(data) {
+    var unindexed_array = data;
+    var indexed_array = {};
+
+    $.map(unindexed_array, function(n, i) {
+      indexed_array[n['name']] = n['value'];
+    });
+
+    return indexed_array;
+}
+
+    </script>
   </body>
 </html>

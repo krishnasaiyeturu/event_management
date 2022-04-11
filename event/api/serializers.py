@@ -24,7 +24,7 @@ class MainUserSerializer(ModelSerializer):
         email = data.get('email', None)
         print("data",data.get('email'))
         if MainUser.objects.filter(email=data.get('email')).exists():
-            raise serializers.ValidationError({'email':'Entered Email ID already Exist'})
+            raise serializers.ValidationError({'errors':'Entered Email ID already Exist'})
         return data
 
 class CustomerSerializer(ModelSerializer):
@@ -37,3 +37,11 @@ class CustomerSerializer(ModelSerializer):
         response = super().to_representation(instance)
         response['is_admin'] = False
         return response
+
+class EventTypeSerializer(ModelSerializer):
+    class Meta:
+        model = EventType
+
+        fields = '__all__'
+    
+ 

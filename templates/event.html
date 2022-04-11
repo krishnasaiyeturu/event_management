@@ -155,6 +155,41 @@
     $('#example').DataTable();
 } );
 
+
+
+$("#login_form").submit(function (event) {
+   
+   event.preventDefault();
+   var form = $(this);
+   var action = form.attr("action");
+   var data = form.serializeArray();
+   $.ajax({
+     
+     type: "POST",
+     url: "/api/event_type/",
+     dataType: 'json',
+     data: getFormData(data),
+     cache: false,
+     success: function (response, textStatus, xhr) {
+       var jsonarr = JSON.parse(JSON.stringify(response));
+
+       if (xhr.status === 200) {
+         toastr.success('LoggedIn Successfully');     
+         window.location='/dashboard'    
+       } else {
+         toastr.error("SomeThing Went Wrong");
+       }
+     },
+     error: function (response, textStatus, xhr) {
+       let error;
+       var jsonarr = JSON.parse(JSON.stringify(response));
+       errorMessage(xhr, textStatus, response)
+      
+     }
+   });
+
+ });
+
 // var myModal = new bootstrap.Modal(document.getElementById("exampleModalCenter"));
 // $('#exampleModalCenter').modal('toggle')
     </script>
