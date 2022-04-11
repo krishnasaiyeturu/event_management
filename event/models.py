@@ -29,6 +29,7 @@ class Venue(models.Model):
     name = models.CharField(max_length=200,unique=True)
     street = models.CharField(max_length=124)
     city = models.CharField(max_length=124)
+    state = models.CharField(max_length=124)
     price_per_day = models.PositiveIntegerField()
     people_accomodate = models.PositiveIntegerField()
 

@@ -43,5 +43,11 @@ class EventTypeSerializer(ModelSerializer):
         model = EventType
 
         fields = '__all__'
+
+class VenueSerializer(ModelSerializer):
+    class Meta:
+        model = Venue
+
+        fields = '__all__'
     
  

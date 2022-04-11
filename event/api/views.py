@@ -1,7 +1,8 @@
 
+from functools import partial
 from django.db import transaction
-from event.api.serializers import CustomerSerializer, MainUserSerializer,EventTypeSerializer
-from event.models import Customer
+from event.api.serializers import CustomerSerializer, MainUserSerializer,EventTypeSerializer,VenueSerializer
+from event.models import Customer, EventType, Venue
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
@@ -93,6 +94,16 @@ class LoginAPIView(APIView):
 
 
 class EventAPIView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        # print('id' in request.query_params)
+        if 'id' in request.query_params:
+            event_list = EventType.objects.raw('SELECT * FROM event_eventtype WHERE id = %s', [request.query_params['id']])
+            return Response(EventTypeSerializer(event_list, many=True).data, status=HTTP_200_OK)
+        else:    
+            event_list = EventType.objects.raw('SELECT * FROM event_eventtype')
+            return Response(EventTypeSerializer(event_list, many=True).data, status=HTTP_200_OK)
+
     def post(self,request,*args,**kwargs):
         data = request.data	
         event_serializer = EventTypeSerializer(data=data)
@@ -101,5 +112,46 @@ class EventAPIView(APIView):
             return Response({'sucess':'Event Type Created Successfully'},status=HTTP_200_OK)
         else:
             raise NotFound(event_serializer.errors)	
+
+    def put(self,request,*args,**kwargs):
+        data = request.data	
+        event_pk = EventType.objects.get(pk=request.data['id'])
+        event_serializer = EventTypeSerializer(event_pk, data=request.data, partial=True)
+        if event_serializer.is_valid():
+            cursor.execute("UPDATE event_eventtype SET name= %s WHERE id = %s", [data['name'],data['id']])
+            return Response({'sucess':'Event Type Updated Successfully'},status=HTTP_200_OK)
+        else:
+            raise NotFound(event_serializer.errors)	
+
+
+class VenueAPIView(APIView):
+    
+    def get(self, request, *args, **kwargs):
+        # print('id' in request.query_params)
+        if 'id' in request.query_params:
+            event_list = Venue.objects.raw('SELECT * FROM event_venue WHERE id = %s', [request.query_params['id']])
+            return Response(VenueSerializer(event_list, many=True).data, status=HTTP_200_OK)
+        else:    
+            event_list = Venue.objects.raw('SELECT * FROM event_venue')
+            return Response(VenueSerializer(event_list, many=True).data, status=HTTP_200_OK)
+
+    def post(self,request,*args,**kwargs):
+        data = request.data	
+        event_serializer = VenueSerializer(data=data)
+        if event_serializer.is_valid():
+            cursor.execute("INSERT INTO event_venue(name,street,city,state,price_per_day,people_accomodate) VALUES( %s,%s,%s,%s,%s,%s )", [data['name'],data['street'],data['city'],data['state'],data['price_per_day'],data['people_accomodate']])
+            return Response({'sucess':'Venue Created Successfully'},status=HTTP_200_OK)
+        else:
+            raise NotFound(event_serializer.errors)	
+
+    def put(self,request,*args,**kwargs):
+        data = request.data	
+        event_pk = EventType.objects.get(pk=request.data['id'])
+        event_serializer = VenueSerializer(event_pk, data=request.data, partial=True)
+        if event_serializer.is_valid():
+            cursor.execute("UPDATE event_venue SET name= %s,street=%s,city=%s,state=%s,price_per_day=%s,people_accomodate=%s WHERE id = %s", [data['name'],data['street'],data['city'],data['state'],data['price_per_day'],data['people_accomodate'],data['id']])
+            return Response({'sucess':'Venue Updated Successfully'},status=HTTP_200_OK)
+        else:
+            raise NotFound(event_serializer.errors)
 
      

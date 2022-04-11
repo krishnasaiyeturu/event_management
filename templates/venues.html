@@ -7,7 +7,16 @@
     <title>Events</title>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
 
+<style>
+    .toast-success{
+        background-color: green !important;
+    }
+    .toast-error{
+        background-color: red !important;
+    }
+</style>
 
 </head>
 <body>
@@ -51,9 +60,8 @@
                         <div class="card-body">
                           <div class="container">
                             <div class="card col-md-12 p-2 mb-4">
-                             
-                              
-                                 <form action="" method="post">
+                                 <form action="" method="post" id="Venues_add">
+                                     
                                     <div class="row ">
                                      <div class="col-md-4 form-group">
                                      <small style="text-align: left; display: block;color: #7E8388">Name</small>
@@ -69,6 +77,11 @@
                                             <small style="text-align: left; display: block;color: #7E8388">City</small>
                                             <input type="text" name="city" id="" required class="form-control">
                                             </div>
+
+                                            <div class="col-md-4 form-group">
+                                                <small style="text-align: left; display: block;color: #7E8388">State</small>
+                                                <input type="text" name="state" id="" required class="form-control">
+                                                </div>
                                             <div class="col-md-4 form-group">
                                                 <small style="text-align: left; display: block;color: #7E8388">Price per day</small>
                                                 <input type="number" name="price_per_day" id="" required class="form-control">
@@ -76,7 +89,7 @@
 
                                                 <div class="col-md-4 form-group">
                                                     <small style="text-align: left; display: block;color: #7E8388">People accomodate</small>
-                                                    <input type="number" name="people_accomadate" id="" required class="form-control">
+                                                    <input type="number" name="people_accomodate" id="" required class="form-control">
                                                     </div>
                                      
                                      </div>
@@ -85,9 +98,7 @@
                                             <button class="btn btn-success">Save</button>
                                          </div>
                                      </div>
-                                   
-                                     
-                                 </form>
+                                </form>
                                 <!-- </form> -->
                               
                             </div>
@@ -100,23 +111,15 @@
                                         <th>Name</th>
                                         <th>Street </th>
                                         <th>City</th>
-                                        <th>Price per day</th>
+                                        <th>State</th>
+                                        <th>Price per day($)</th>
                                         <th>People accomodate</th>
                                         <th>Operate</th>
                                        
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Bhagatg</td>
-                                        <td>Street </td>
-                                        <td>City</td>
-                                        <td>Price per day</td>
-                                        <td>People accomodate</td>
-                                        <td  data-toggle="modal" data-toggle="modal" data-target="#exampleModal"><span class="iconify" data-icon="bx:edit" style="    font-size: 20px;
-                                            color: blue;
-                                        cursor:pointer"></span></td>
-                                    </tr>
+                                <tbody id="venueListing">
+                                   
                                 </tbody>
                              
                             </table>
@@ -159,35 +162,40 @@
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title" id="exampleModalLabel">Edit Venue</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" id="closeButtonModal" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
                 <form action="" method="put">
+                    <input type="hidden" id="venuePk">
                     <div class="row ">
                      <div class="col-md-12 form-group">
                      <small style="text-align: left; display: block;color: #7E8388">Name</small>
-                     <input type="text" name="name" id="" required class="form-control">
+                     <input type="text" name="name" id="editName" required class="form-control">
                      </div>
 
                      <div class="col-md-12 form-group">
                         <small style="text-align: left; display: block;color: #7E8388">Street</small>
-                        <input type="text" name="street" id="" required class="form-control">
+                        <input type="text" name="street" id="editStreet" required class="form-control">
                         </div>
 
                         <div class="col-md-12 form-group">
                             <small style="text-align: left; display: block;color: #7E8388">City</small>
-                            <input type="text" name="city" id="" required class="form-control">
+                            <input type="text" name="city" id="editCity" required class="form-control">
                             </div>
                             <div class="col-md-12 form-group">
+                                <small style="text-align: left; display: block;color: #7E8388">State</small>
+                                <input type="text" name="state" id="editState" required class="form-control">
+                                </div>
+                            <div class="col-md-12 form-group">
                                 <small style="text-align: left; display: block;color: #7E8388">Price per day</small>
-                                <input type="number" name="price_per_day" id="" required class="form-control">
+                                <input type="number" name="price_per_day" id="editPrice_per_day" required class="form-control">
                                 </div>
 
                                 <div class="col-md-12 form-group">
                                     <small style="text-align: left; display: block;color: #7E8388">People accomodate</small>
-                                    <input type="number" name="people_accomadate" id="" required class="form-control">
+                                    <input type="number" name="people_accomadate" id="editPeople_accomodate" required class="form-control">
                                     </div>
                      
                      </div>
@@ -201,7 +209,7 @@
                  </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success">Save</button>
+                <button class="btn btn-success" onclick="updateVenue()">Update</button>
               <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
           </div>
@@ -213,12 +221,161 @@
     <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
     <script>
         $(document).ready(function() {
     $('#example').DataTable();
 } );
+var token = '{{csrf_token}}';
+
+$("#Venues_add").submit(function (event) {
+   
+   event.preventDefault();
+   var form = $(this);
+   var action = form.attr("action");
+   var data = form.serializeArray();
+   $.ajax({
+    headers: { "X-CSRFToken": token },
+     type: "POST",
+     url: "/api/venue/",
+     dataType: 'json',
+     data: getFormData(data),
+     cache: false,
+     success: function (response, textStatus, xhr) {
+       var jsonarr = JSON.parse(JSON.stringify(response));
+
+       if (xhr.status === 200) {
+         toastr.success('Saved  Successfully');     
+        //  window.location='/dashboard'    
+        $('#Venues_add').trigger('reset')
+       } else {
+         toastr.error("SomeThing Went Wrong");
+       }
+     },
+     error: function (response, textStatus, xhr) {
+       let error;
+       var jsonarr = JSON.parse(JSON.stringify(response));
+       errorMessage(xhr, textStatus, response)
+      
+     }
+   });
+
+ });
+
+ function getFormData(data) {
+    var unindexed_array = data;
+    var indexed_array = {};
+
+    $.map(unindexed_array, function(n, i) {
+      indexed_array[n['name']] = n['value'];
+    });
+
+    return indexed_array;
+}
+
+getVenues()
+function getVenues(){
+    $.ajax({
+    type: "GET",
+    url: `/api/venue/`,
+
+    success: function (response, textStatus, xhr) {
+      let venues = JSON.parse(JSON.stringify(response));
+      console.log(venues,'venues');
+      $('#venueListing').html('')
+      if (xhr.status === 200) {
+          for (const {id,name,people_accomodate,price_per_day,state,street,city} of venues) {
+            $('#venueListing').append( ` <tr>
+                                        <td>${name}</td>
+                                        <td>${street} </td>
+                                        <td>${city}</td>
+                                        <td>${state}</td>
+                                        <td>${price_per_day}</td>
+                                        <td>${people_accomodate}</td>
+                                        <td onclick="getVenue(${id})"  data-toggle="modal" data-toggle="modal" data-target="#exampleModal"><span class="iconify" data-icon="bx:edit" style="    font-size: 20px;
+                                            color: blue;
+                                        cursor:pointer"></span></td>
+                                    </tr>`)
+          }
+   
+      }
+    },
+    error: function (response, textStatus, xhr) {
+      let error;
+      var jsonarr = JSON.parse(JSON.stringify(response));
+      errorMessage(xhr, textStatus, response)
+    }
+  });
+ }
 
 
+ function getVenue(id){
+    $.ajax({
+    type: "GET",
+    url: `/api/venue/?id=${id}`,
+
+    success: function (response, textStatus, xhr) {
+      let venues = JSON.parse(JSON.stringify(response));
+      console.log(venues,'venue');
+    //   $('#venueListing').html('')
+      if (xhr.status === 200) {
+          for (const {id,name,people_accomodate,price_per_day,state,street,city} of venues) {
+            $('#venuePk').val(id)
+            $('#editName').val(name)
+            $('#editStreet').val(street)
+            $('#editCity').val(city)
+            $('#editState').val(state)
+            $('#editPrice_per_day').val(price_per_day)
+            $('#editPeople_accomodate').val(people_accomodate)
+          }
+   
+      }
+    },
+    error: function (response, textStatus, xhr) {
+      let error;
+      var jsonarr = JSON.parse(JSON.stringify(response));
+      errorMessage(xhr, textStatus, response)
+    }
+  });
+ }
+
+
+ function updateVenue(){
+    event.preventDefault()
+    $.ajax({
+          headers: { "X-CSRFToken": token },
+          type: "PUT",
+          url: `/api/venue/`,
+          data: {
+           id: $('#venuePk').val(),
+            name:$('#editName').val(),
+           street: $('#editStreet').val(),
+            city:$('#editCity').val(),
+            state:$('#editState').val(),
+            price_per_day:$('#editPrice_per_day').val(),
+            people_accomodate:$('#editPeople_accomodate').val()
+          },
+          success: function (response, textStatus, xhr) {
+
+            var service = JSON.parse(JSON.stringify(response));
+            if (xhr.status === 200) {
+              toastr.success("Updated Successfully");
+              $('#closeButtonModal').trigger('click')
+              getVenues()
+            } else {
+              toastr.error("Something went wrong try later");
+
+            }
+          },
+          error: function (response, textStatus, xhr) {
+            let error;
+            var jsonarr = JSON.parse(JSON.stringify(response));
+            errorMessage(xhr, textStatus, response)
+
+          }
+
+        });
+}
     </script>
 </body>
 </html>
