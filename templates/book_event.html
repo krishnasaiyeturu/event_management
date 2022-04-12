@@ -90,10 +90,12 @@
 
                                                 <div class="col-md-4 form-group">
                                                     <small style="text-align: left; display: block;color: #7E8388">People accomodate</small>
-                                                    <select class="form-control " name="no_of_participants" id="PeopleListing_ID" required >
+                                                    <select class="form-control " name="" id="PeopleListing_ID" required >
                                                         <option value="">Select No of People </option>
                                                       </select>
                                                     </div>
+
+                                                    <input type="hidden" name="no_of_participants" id="PeopleListing_Value">
                                      
                                                     <div class="col-md-4 form-group">
                                                         <small style="text-align: left; display: block;color: #7E8388">Estimated Price</small>
@@ -276,6 +278,8 @@ function getPrice(id){
           for (const {id,event_type,venue,estimation_price,no_of_participants} of price) {
 
             $('#Estimated_Price_Id').val(estimation_price)
+            $('#PeopleListing_Value').val(no_of_participants)
+
 
 
           }

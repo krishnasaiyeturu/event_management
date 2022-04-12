@@ -115,9 +115,10 @@ function EventTypeDropDown(id){
             } else{
               Name = "< " + useroles[i].no_of_participants;
             }
-            roleContent +='<option value="'+Name+'">'+Name+'</option>';
+            roleContent +='<option value="'+Venue_ID+'">'+Name+'</option>';
             
           }
+        //   $(`#${value_id}`).val(useroles[i].no_of_participants)
           $(`#${id}`).html(roleContent);    
           return resolve(true)                            
         }
