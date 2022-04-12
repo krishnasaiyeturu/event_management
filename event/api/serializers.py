@@ -38,6 +38,19 @@ class CustomerSerializer(ModelSerializer):
         response['is_admin'] = False
         return response
 
+
+
+class EventManagerSerializer(ModelSerializer):
+    class Meta:
+        model = EventManager
+
+        fields = '__all__'
+    
+    def to_representation(self, instance):  # For Listing instance
+        response = super().to_representation(instance)
+        response['is_admin'] = True
+        return response
+
 class EventTypeSerializer(ModelSerializer):
     class Meta:
         model = EventType
@@ -49,5 +62,30 @@ class VenueSerializer(ModelSerializer):
         model = Venue
 
         fields = '__all__'
+
+
+class EstimatedPriceSerializer(ModelSerializer):
+    class Meta:
+        model = EstimatedPrice
+
+        fields = '__all__'
     
- 
+    def to_representation(self, instance):  # For Listing instance
+        response = super().to_representation(instance)
+        response['venue'] = instance.venue.name
+        response['event_type'] = instance.event_type.name
+        return response
+
+
+class EventSerializer(ModelSerializer):
+    class Meta:
+        model = Event
+
+        fields = '__all__'
+    
+    def to_representation(self, instance):  # For Listing instance
+        response = super().to_representation(instance)
+        response['venue'] = instance.venue.name +'-'+instance.venue.street+','+instance.venue.city+','+instance.venue.state
+        response['event_type'] = instance.event_type.name
+        response['customer'] = instance.customer.name
+        return response

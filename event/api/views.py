@@ -1,8 +1,8 @@
 
 from functools import partial
 from django.db import transaction
-from event.api.serializers import CustomerSerializer, MainUserSerializer,EventTypeSerializer,VenueSerializer
-from event.models import Customer, EventType, Venue
+from event.api.serializers import CustomerSerializer, EstimatedPriceSerializer, EventManagerSerializer, EventSerializer, MainUserSerializer,EventTypeSerializer,VenueSerializer
+from event.models import Customer, EstimatedPrice, Event, EventManager, EventType, Venue
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
@@ -78,12 +78,15 @@ class LoginAPIView(APIView):
                 # main_user = Customer.objects.filter(user=user)
                 # if main_user.exists():
                 main_user = Customer.objects.raw('SELECT * FROM event_customer WHERE email = %s', [data['email']])
+                print(main_user,len(main_user))
                 if len(main_user)>0:
                     auth_login(request,user)
                     db_user = CustomerSerializer(Customer.objects.get(user__username=email))
                     return Response(db_user.data,status=HTTP_200_OK)
                 else:
-                    return Response({'error':'Not Assigned Any Web Features'},status=HTTP_400_BAD_REQUEST)
+                    auth_login(request,user)
+                    db_user = EventManagerSerializer(EventManager.objects.get(user__username=email))
+                    return Response(db_user.data,status=HTTP_200_OK)
             else:
                 print("The username and password were incorrect.")
                 return Response({'error':'User not active'},status=HTTP_400_BAD_REQUEST)
@@ -155,3 +158,95 @@ class VenueAPIView(APIView):
             raise NotFound(event_serializer.errors)
 
      
+
+
+class EstimatedPriceAPIView(APIView):
+    
+    def get(self, request, *args, **kwargs):
+        data = request.query_params
+        if 'id' in request.query_params:
+            event_list = EstimatedPrice.objects.raw('SELECT * FROM event_estimatedprice WHERE id = %s', [request.query_params['id']])
+            return Response(EstimatedPriceSerializer(event_list, many=True).data, status=HTTP_200_OK)
+        else:    
+            event_list = EstimatedPrice.objects.raw("SELECT event_estimatedprice.id, event_estimatedprice.event_type_id,event_estimatedprice.venue_id, event_estimatedprice.no_of_participants, event_estimatedprice.estimation_price FROM event_estimatedprice WHERE (event_estimatedprice.event_type_id =  %s AND event_estimatedprice.venue_id =  %s)", [data['event_type'],data['venue']])
+            # event_list = EstimatedPrice.objects.filter(event_type=data['event_type'],venue=data['venue'])
+            # print(event_list.query)
+            return Response(EstimatedPriceSerializer(event_list, many=True).data, status=HTTP_200_OK)
+
+    def post(self,request,*args,**kwargs):
+        data = request.data	
+        event_serializer = EstimatedPriceSerializer(data=data)
+        if event_serializer.is_valid():
+            cursor.execute("INSERT INTO event_estimatedprice(no_of_participants,estimation_price,event_type_id,venue_id) VALUES( %s,%s,%s,%s )", [data['no_of_participants'],data['estimation_price'],data['event_type'],data['venue']])
+            return Response({'sucess':'Price Created Successfully'},status=HTTP_200_OK)
+        else:
+            raise NotFound(event_serializer.errors)
+
+
+    def put(self,request,*args,**kwargs):
+        data = request.data	
+        price_pk = EstimatedPrice.objects.get(pk=request.data['id'])
+        price_serializer = EstimatedPriceSerializer(price_pk, data=request.data, partial=True)
+        if price_serializer.is_valid():
+            cursor.execute("UPDATE event_estimatedprice SET no_of_participants= %s,estimation_price=%s WHERE id = %s", [data['no_of_participants'],data['estimation_price'],data['id']])
+            return Response({'sucess':'Price Updated Successfully'},status=HTTP_200_OK)
+        else:
+            raise NotFound(price_serializer.errors)	
+
+
+
+
+
+class EventsAPIView(APIView):
+    
+    def get(self, request, *args, **kwargs):
+        data = request.query_params
+        # if 'id' in request.query_params:
+        #     event_list = Event.objects.raw('SELECT * FROM event_event WHERE id = %s', [request.query_params['id']])
+        #     return Response(EventSerializer(event_list, many=True).data, status=HTTP_200_OK)
+        # else:    
+        #     event_list = Event.objects.raw("SELECT event_estimatedprice.id, event_estimatedprice.event_type_id,event_estimatedprice.venue_id, event_estimatedprice.no_of_participants, event_estimatedprice.estimation_price FROM event_estimatedprice WHERE (event_estimatedprice.event_type_id =  %s AND event_estimatedprice.venue_id =  %s)", [data['event_type'],data['venue']])
+        #     # event_list = EstimatedPrice.objects.filter(event_type=data['event_type'],venue=data['venue'])
+        #     # print(event_list.query)
+        if 'customer' in request.query_params:
+            event_list =Event.objects.raw("SELECT event_event.id, event_event.date_of_event, event_event.no_of_participants, event_event.customer_id, event_event.event_type_id, event_event.venue_id, event_event.status, event_event.duration, event_event.estimation_price FROM event_event INNER JOIN event_customer ON (event_event.customer_id = event_customer.id) WHERE event_customer.user_id = %s",[request.user.pk])
+            # event_list = Event.objects.filter(customer__user=request.user.pk)
+            print(event_list.query)
+            return Response(EventSerializer(event_list, many=True).data, status=HTTP_200_OK)
+        if 'status' in request.query_params:
+            event_list = Event.objects.raw("SELECT event_event.id, event_event.date_of_event, event_event.no_of_participants, event_event.customer_id, event_event.event_type_id, event_event.venue_id, event_event.status, event_event.duration, event_event.estimation_price FROM event_event WHERE event_event.status = %s",[data['status']])
+            # event_list = Event.objects.filter(status=data['status'])
+            print(event_list.query)
+            return Response(EventSerializer(event_list, many=True).data, status=HTTP_200_OK)
+        else:
+            event_list = Event.objects.raw("SELECT `event_event`.`id`, `event_event`.`date_of_event`, `event_event`.`no_of_participants`, `event_event`.`customer_id`, `event_event`.`event_type_id`, `event_event`.`venue_id`, `event_event`.`status`, `event_event`.`duration`, `event_event`.`estimation_price` FROM `event_event`")
+            # event_list = Event.objects.all()
+            print(event_list.query)
+            return Response(EventSerializer(event_list, many=True).data, status=HTTP_200_OK)
+
+
+    def post(self,request,*args,**kwargs):
+        data = request.data	
+        data._mutable = True
+        try:
+            customer = Customer.objects.get(user = request.user.pk)
+        except Customer.DoesNotExist:
+            return Response([{'error': 'Kindly Login As User'}], status=HTTP_400_BAD_REQUEST)
+        data['customer'] = customer.pk
+        event_serializer = EventSerializer(data=data)
+        if event_serializer.is_valid():
+            cursor.execute("INSERT INTO event_event(date_of_event,no_of_participants,duration,estimation_price,customer_id,event_type_id,venue_id,status) VALUES( %s,%s,%s,%s, %s,%s,%s,%s )", [data['date_of_event'],data['no_of_participants'],data['duration'],data['estimation_price'],data['customer'],data['event_type'],data['venue'],'Requested'])
+            return Response({'sucess':'Event Created Successfully'},status=HTTP_200_OK)
+        else:
+            raise NotFound(event_serializer.errors)
+
+    
+    def put(self,request,*args,**kwargs):
+        data = request.data	
+        price_pk = Event.objects.get(pk=request.data['id'])
+        price_serializer = EventSerializer(price_pk, data=request.data, partial=True)
+        if price_serializer.is_valid():
+            cursor.execute("UPDATE event_event SET status= %s WHERE id = %s", [data['status'],data['id']])
+            return Response({'sucess':'Price Updated Successfully'},status=HTTP_200_OK)
+        else:
+            raise NotFound(price_serializer.errors)	

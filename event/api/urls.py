@@ -15,4 +15,9 @@ urlpatterns = [
     url(r'^api/login_api/',api_views.LoginAPIView.as_view()),
     url(r'^api/event_type/',api_views.EventAPIView.as_view()),
     url(r'^api/venue/',api_views.VenueAPIView.as_view()),
+    url(r'^api/price/',api_views.EstimatedPriceAPIView.as_view()),
+    url(r'^api/event/',api_views.EventsAPIView.as_view()),
+
+
+    
 ]
