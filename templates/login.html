@@ -113,8 +113,15 @@ $("#customer_register").submit(function (event) {
        var jsonarr = JSON.parse(JSON.stringify(response));
 
        if (xhr.status === 200) {
-         toastr.success('LoggedIn Successfully');     
-         window.location='/dashboard'    
+         toastr.success('LoggedIn Successfully'); 
+         console.log(jsonarr.is_admin) 
+         sessionStorage.setItem("is_admin",jsonarr.is_admin)   
+         if (jsonarr.is_admin){
+          window.location='/dashboard'
+         }else{
+          window.location='/book_event'
+         }
+             
        } else {
          toastr.error("SomeThing Went Wrong");
        }

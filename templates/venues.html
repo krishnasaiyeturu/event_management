@@ -248,6 +248,7 @@ $("#Venues_add").submit(function (event) {
          toastr.success('Saved  Successfully');     
         //  window.location='/dashboard'    
         $('#Venues_add').trigger('reset')
+        getVenues()
        } else {
          toastr.error("SomeThing Went Wrong");
        }
@@ -376,6 +377,8 @@ function getVenues(){
 
         });
 }
+    
+    
     </script>
 </body>
 </html>

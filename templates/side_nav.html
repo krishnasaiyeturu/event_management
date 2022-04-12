@@ -5,11 +5,14 @@
         position: relative;
         left: 20%;">
       </a>
+
+      {% if user.customer == "" %}
       <li  class="nav-link">
         <i class="bx bxs-dashboard"></i>
         <span class="mx-2"> <a href="/dashboard" style="  text-decoration: none !important;
           color: white !important;"> Dashboard</a></span>
       </li>
+
       <li  class="nav-link">
         <i  class="iconify" data-icon="ic:baseline-event-note"></i>
         <span class="mx-2"> <a href="/event" style="  text-decoration: none !important;
@@ -25,12 +28,14 @@
         <span class="mx-2"><a href="/prices" style="  text-decoration: none !important;
           color: white !important;"> Manage Prices</a></span>
       </li>
+      {% endif %}
+      {% if user.eventmanager == "" %}
       <li href="#" class="nav-link">
         <i  class="iconify" data-icon="ic:outline-event-available"></i>
         <span class="mx-2"><a href="/book_event" style="  text-decoration: none !important;
           color: white !important;">Book Event </a></span>
       </li>
-
+      {% endif %}
       <li href="#" class="nav-link">
         <i  ></i>
         <span class="mx-2"><a href="/logout" style="  text-decoration: none !important;
@@ -46,3 +51,10 @@
   </div>
 
   <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+
+
+
+  <script>
+      sessionStorage.setItem("is_admin",jsonarr.is_admin)
+      sessionStorage.getItem("is_admin") 
+  </script>

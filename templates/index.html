@@ -30,154 +30,183 @@
         <div class="row mb-4">
           <div class="form-group col-md-4">
               <small style="text-align: left; display: block;color: #7E8388">Select</small>
-              <select class="form-control " name="branch" id="Event_Type" required>
-                <option value="" selected>Requested</option>
-                <option value="">Accepted</option>
-                <option value="">Rejected</option>
+              <select class="form-control "  id="Status_ID" required>
+                <option value="Requested" selected>Requested</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Rejected">Rejected</option>
               </select>
             </div>
-
+<!-- 
             <div class="form-group col-md-4">
               <small style="text-align: left; display: block;color: #7E8388">Filter Based on Date</small>
                <input type="date" class="form-control">
-            </div>
+            </div> -->
        </div>
      <h5 class="mt-4">List of requests</h5>
      <hr>
-       <div class="row ">
-       <!-- first card -->
-           <div class="col-md-6">
-            <div class="card">
-           <div class="card-body">
-             <div class="col-md-12">
+       <div class="row " id="event_list">
 
-              <span>Event Type : </span> <span class="display">Hello</span>
-             </div>
-
-             <div class="col-md-12">
-
-              <span>Venue Address : </span> <span class="display">Hello.Hello Hello</span>
-             </div>
-            
-             <div class="col-md-12">
-
-              <span>Date of Event : </span> <span class="display">20/12/2022</span>
-             </div>
-             <div class="col-md-12">
-
-              <span>No of Participants : </span> <span class="display">100</span>
-             </div>
-
-             <div class="col-md-12">
-
-              <span>Duration : </span> <span class="display">100</span>
-             </div>
-             <div class="col-md-12">
-
-              <span>Estimated Price : </span> <span class="display">$100</span>
-             </div>
-             <div class="col-md-12">
-
-              <span>Customer Name : </span> <span class="display">Bhagath</span>
-             </div>
-             <div class="col-md-12">
-
-              <span>Customer Contact Number : </span> <span class="display">8790353282</span>
-             </div>
-             <div class="col-md-12">
-
-              <span>Status : </span> <span class="display">Not Accepted</span>
-             </div>
-<div class="row mt-4">
-  <div class="col-md-3"></div>
-  <div class="col-md-3">
-
-    <button class="btn btn-success"> Accept</button>
-   </div>
-   <div class="col-md-3">
-
-    <button class="btn btn-danger"> Reject</button>
-   </div>
-   <div class="col-md-3"></div>
-</div>
-            
-           </div>
-            </div>
-           
-           
-         </div>
-
-<!-- end of first card -->
-
-         <!-- second crd -->
-         <div class="col-md-6">
-          <div class="card">
-         <div class="card-body">
-           <div class="col-md-12">
-
-            <span>Event Type : </span> <span class="display">Hello</span>
-           </div>
-
-           <div class="col-md-12">
-
-            <span>Venue Address : </span> <span class="display">Hello.Hello Hello</span>
-           </div>
-          
-           <div class="col-md-12">
-
-            <span>Date of Event : </span> <span class="display">20/12/2022</span>
-           </div>
-           <div class="col-md-12">
-
-            <span>No of Participants : </span> <span class="display">100</span>
-           </div>
-
-           <div class="col-md-12">
-
-            <span>Duration : </span> <span class="display">100</span>
-           </div>
-           <div class="col-md-12">
-
-            <span>Estimated Price : </span> <span class="display">$100</span>
-           </div>
-           <div class="col-md-12">
-
-            <span>Customer Name : </span> <span class="display">Bhagath</span>
-           </div>
-           <div class="col-md-12">
-
-            <span>Customer Contact Number : </span> <span class="display">8790353282</span>
-           </div>
-           <div class="col-md-12">
-
-            <span>Status : </span> <span class="display">Not Accepted</span>
-           </div>
-           <div class="row mt-4">
-            <div class="col-md-3"></div>
-            <div class="col-md-3">
-          
-              <button class="btn btn-success"> Accept</button>
-             </div>
-             <div class="col-md-3">
-          
-              <button class="btn btn-danger"> Reject</button>
-             </div>
-             <div class="col-md-3"></div>
-          </div>
-          
-         </div>
-          </div>
-         
-         
-       </div>
-         <!-- end of second card -->
        </div>
     </div>
   
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 
+    <script src="/static/js/service.js"></script>
+<script>
 
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+var token = '{{csrf_token}}';
+
+$(document).ready(function() {
+  getEvent("Requested")
     
+    // EventTypeDropDown('Event_Type_ID')
+} );
+
+$('#Status_ID').change(function(){
+
+  getEvent($('#Status_ID').val())
+
+})
+
+
+
+function getEvent(status){
+    $.ajax({
+    type: "GET",
+    url: `/api/event/?status=${status}`,
+
+    success: function (response, textStatus, xhr) {
+      let price = JSON.parse(JSON.stringify(response));
+      console.log(price,'price');
+      $('#event_list').html('')
+      if (xhr.status === 200) {
+          for (const {id,date_of_event,no_of_participants,status,duration,estimation_price,venue,event_type,customer} of price) {
+
+            let aprovebuttons = "";
+            if(status == "Requested"){
+            aprovebuttons =  `<div class="row mt-4">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3">
+
+                      <button class="btn btn-success" onclick="statuschange('Accepted',${id})" > Accept</button>
+                    </div>
+                    <div class="col-md-3">
+
+                      <button class="btn btn-danger" onclick="statuschange('Rejected',${id})"> Reject</button>
+                    </div>
+                    <div class="col-md-3"></div>
+                  </div>`
+            }
+
+            $('#event_list').append( `<div class="col-md-6 mt-4">
+                    <div class="card">
+                    <div class="card-body">
+                      <div class="col-md-12">
+
+                        <span>Event Type : </span> <span class="display">${event_type}</span>
+                      </div>
+
+                      <div class="col-md-12">
+
+                        <span>Venue Address : </span> <span class="display">${venue}</span>
+                      </div>
+            
+                      <div class="col-md-12">
+
+                        <span>Date of Event : </span> <span class="display">${date_of_event}</span>
+                      </div>
+                      <div class="col-md-12">
+
+                        <span>No of Participants : </span> <span class="display">${no_of_participants}</span>
+                      </div>
+
+                      <div class="col-md-12">
+
+                        <span>Duration : </span> <span class="display">${duration}</span>
+                      </div>
+                      <div class="col-md-12">
+
+                        <span>Estimated Price : </span> <span class="display">${estimation_price}</span>
+                      </div>
+                      <div class="col-md-12">
+
+                        <span>Customer Name : </span> <span class="display">${customer}</span>
+                      </div>
+                    <div class="col-md-12">
+
+                      <span>Customer Contact Number : </span> <span class="display">8790353282</span>
+                    </div>
+                    <div class="col-md-12">
+
+                      <span>Status : </span> <span class="display">${status}</span>
+                    </div>
+                    ${aprovebuttons}
+            
+                </div>
+            </div>
+           
+           
+         </div>`)
+          }
    
+      }
+    },
+    error: function (response, textStatus, xhr) {
+      let error;
+      var jsonarr = JSON.parse(JSON.stringify(response));
+      errorMessage(xhr, textStatus, response)
+    }
+  });
+ }
+
+
+ function statuschange(status,id){
+
+
+    event.preventDefault()
+    $.ajax({
+          headers: { "X-CSRFToken": token },
+          type: "PUT",
+          url: `/api/event/`,
+          data: {
+           id: id,
+           status:status,
+
+          },
+          success: function (response, textStatus, xhr) {
+
+            var service = JSON.parse(JSON.stringify(response));
+            if (xhr.status === 200) {
+              toastr.success(`${status} Successfully`);
+              $('#closeButtonModal').trigger('click')
+              getEvent($('#Status_ID').val())
+            } else {
+              toastr.error("Something went wrong try later");
+
+            }
+          },
+          error: function (response, textStatus, xhr) {
+            let error;
+            var jsonarr = JSON.parse(JSON.stringify(response));
+            errorMessage(xhr, textStatus, response)
+
+          }
+
+        });
+
+   
+
+ }
+
+
+</script>
+
+
 </body>
   </html>

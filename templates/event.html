@@ -158,9 +158,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
     <script>
         var token = '{{csrf_token}}';
-        $(document).ready(function() {
+  $(document).ready(function() {
     $('#example').DataTable();
-} );
+
+  });
 
 
 
@@ -184,6 +185,7 @@ $("#event_form").submit(function (event) {
          toastr.success('Saved  Successfully');     
         //  window.location='/dashboard'    
         $('#event_form').trigger('reset')
+        getEvents()
        } else {
          toastr.error("SomeThing Went Wrong");
        }

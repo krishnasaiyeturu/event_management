@@ -10,6 +10,16 @@
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
 </head>
+
+<style>
+      .toast-success{
+        background-color: green !important;
+    }
+    .toast-error{
+        background-color: red !important;
+    }
+</style>
+
 <body>
     {% include 'side_nav.html' %}
 
@@ -21,7 +31,7 @@
             <div class="container-fluid">
               <div class="row mb-2">
                 <div class="col-sm-6 col-md-6">
-                  <h1>Manage Venues</h1>
+                  <h1>Manage Events</h1>
                 </div>
                
               </div>
@@ -53,18 +63,18 @@
                             <div class="card col-md-12 p-2 mb-4">
                              
                               
-                                 <form action="" method="post">
+                                 <form action="" method="post" id="event_add">
                                     <div class="row ">
                                         <div class="form-group col-md-4">
                                             <small style="text-align: left; display: block;color: #7E8388">Select Event Type</small>
-                                            <select class="form-control " name="branch" id="Event_Type" required >
+                                            <select class="form-control " name="event_type" id="Event_Type_ID" required >
                                               <option value="">Select Event Type</option>
                                             </select>
                                           </div>
 
                                           <div class="form-group col-md-4">
                                             <small style="text-align: left; display: block;color: #7E8388">Select venue</small>
-                                            <select class="form-control " name="branch" id="Event_Type" required >
+                                            <select class="form-control " name="venue" id="Venue_ID" required >
                                               <option value="">Select venue</option>
                                             </select>
                                           </div>
@@ -80,14 +90,14 @@
 
                                                 <div class="col-md-4 form-group">
                                                     <small style="text-align: left; display: block;color: #7E8388">People accomodate</small>
-                                                    <select class="form-control " name="branch" id="Event_Type" required >
-                                                        <option value=""> &#60; 100 </option>
+                                                    <select class="form-control " name="no_of_participants" id="PeopleListing_ID" required >
+                                                        <option value="">Select No of People </option>
                                                       </select>
                                                     </div>
                                      
                                                     <div class="col-md-4 form-group">
                                                         <small style="text-align: left; display: block;color: #7E8388">Estimated Price</small>
-                                                        <input type="number" name="duration" id="" value="100" required class="form-control" disabled>
+                                                        <input type="number" name="estimation_price" id="Estimated_Price_Id" value="" required class="form-control" readonly>
                                                         </div>
                                      </div>
                                      <div class="row mt-4">
@@ -118,16 +128,8 @@
                                        
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Birthday</td>
-                                        <td>dj,marthahalli,Bangalore </td>
-                                        <td>4/11/2022</td>
-                                        <td>60 mins</td>
-                                        <td>100</td>
-                                        <td>10</td>
-                                        <td>Pending</td>
-                                    </tr>
+                                <tbody id="event_list">
+                              
                                 </tbody>
                              
                             </table>
@@ -218,17 +220,150 @@
           </div>
         </div>
       </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+      <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+      <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+      <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+
+<script src="/static/js/service.js"></script>
+
     <script>
+      var token = '{{csrf_token}}';
         $(document).ready(function() {
     $('#example').DataTable();
+
+    EventTypeDropDown('Event_Type_ID')
+    getEvent()
 } );
+
+
+$('#Event_Type_ID').change( function(){
+
+VenueDropDown('Venue_ID')
+
+
+})
+
+
+$('#Venue_ID').change( function(){
+
+  PeopleDropDown('PeopleListing_ID',$('#Event_Type_ID').val(),$('#Venue_ID').val())
+
+})
+
+$('#PeopleListing_ID').change( function(){
+
+getPrice($('#PeopleListing_ID').val())
+
+
+})
+
+
+
+function getPrice(id){
+    $.ajax({
+    type: "GET",
+    url: `/api/price/?id=${id}`,
+
+    success: function (response, textStatus, xhr) {
+      let price = JSON.parse(JSON.stringify(response));
+      console.log(price,'price');
+    //   $('#venueListing').html('')
+      if (xhr.status === 200) {
+          for (const {id,event_type,venue,estimation_price,no_of_participants} of price) {
+
+            $('#Estimated_Price_Id').val(estimation_price)
+
+
+          }
+   
+      }
+    },
+    error: function (response, textStatus, xhr) {
+      let error;
+      var jsonarr = JSON.parse(JSON.stringify(response));
+      errorMessage(xhr, textStatus, response)
+    }
+  });
+ }
+
+ $("#event_add").submit(function (event) {
+   
+   event.preventDefault();
+   var form = $(this);
+   var action = form.attr("action");
+   var data = form.serializeArray();
+   $.ajax({
+    headers: { "X-CSRFToken": token },
+     type: "POST",
+     url: "/api/event/",
+     dataType: 'json',
+     data: getFormData(data),
+     cache: false,
+     success: function (response, textStatus, xhr) {
+       var jsonarr = JSON.parse(JSON.stringify(response));
+
+       if (xhr.status === 200) {
+         toastr.success("Requested  Successfully");
+        //  getPrices($('#Event_Type_ID').val(),$('#Venue_ID').val())     
+        //  window.location='/dashboard'    
+        $('#event_add').trigger('reset')
+        getEvent()
+       } else {
+         toastr.error("SomeThing Went Wrong");
+       }
+     },
+     error: function (response, textStatus, xhr) {
+       let error;
+       var jsonarr = JSON.parse(JSON.stringify(response));
+       errorMessage(xhr, textStatus, response)
+      
+     }
+   });
+
+ });
+
+
+ function getEvent(){
+    $.ajax({
+    type: "GET",
+    url: `/api/event/?customer=`,
+
+    success: function (response, textStatus, xhr) {
+      let price = JSON.parse(JSON.stringify(response));
+      console.log(price,'price');
+      $('#event_list').html('')
+      if (xhr.status === 200) {
+          for (const {id,date_of_event,no_of_participants,status,duration,estimation_price,venue,event_type} of price) {
+            $('#event_list').append( ` <tr>
+                                        <td>${event_type}</td>
+                                        <td>${venue} </td>
+                                        <td>${date_of_event} </td>
+                                        <td>${duration} </td>
+                                        <td>${no_of_participants} </td>
+                                        <td>${estimation_price} </td>
+                                        <td>${status} </td>
+                                    </tr>`)
+          }
+   
+      }
+    },
+    error: function (response, textStatus, xhr) {
+      let error;
+      var jsonarr = JSON.parse(JSON.stringify(response));
+      errorMessage(xhr, textStatus, response)
+    }
+  });
+ }
+
+
+
+ 
+
+
 
 
     </script>

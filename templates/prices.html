@@ -43,7 +43,7 @@
                   <div class="container mt-3">
                     <ul class="nav nav-tabs">
                       <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#EventTypeTab">Add Venues</a>
+                        <a class="nav-link active" data-toggle="tab" href="#EventTypeTab">Add Price</a>
                       </li>
                      
                     </ul>
@@ -57,54 +57,54 @@
                             <div class="card col-md-12 p-2 mb-4">
                              
                               
-                                 <!-- <form action="" method="post"> -->
+                                 <form action="" method="post" id="priceAdd">
                                     <div class="row ">
                                         <div class="form-group col-md-4">
                                             <small style="text-align: left; display: block;color: #7E8388">Select Event Type</small>
-                                            <select class="form-control " name="branch" id="Event_Type" required>
+                                            <select class="form-control " name="event_type" id="Event_Type_ID" required>
                                               <option value="">Select Event Type</option>
                                             </select>
                                           </div>
                                           <div class="form-group col-md-4">
                                             <small style="text-align: left; display: block;color: #7E8388">Select Venue</small>
-                                            <select class="form-control " name="venue" id="Venue" required>
+                                            <select class="form-control " name="venue" id="Venue_ID" required>
                                               <option value="">Select Venue</option>
                                             </select>
                                           </div>
                                   
 
-                                     
+<!--                                      
                                      </div>
-                                     <div class="row mt-4">
+                                     <div class="row mt-4"> -->
                                         <div class="form-group col-md-4">
                                             <small style="text-align: left; display: block;color: #7E8388">No of people</small>
-                                            <input type="number" name="no_of_people" id="" required class="form-control">
+                                            <input type="number" name="no_of_participants" id="" required class="form-control">
                                           </div>
                                           <div class="form-group col-md-4">
                                             <small style="text-align: left; display: block;color: #7E8388">Amount</small>
-                                            <input type="number" name="amount" id="" required class="form-control">
+                                            <input type="number" name="estimation_price" id="" required class="form-control">
                                           </div>
-                                          <div class="col-md-3"  style="margin: auto;">
+                                          <!-- <div class="col-md-3"  style="margin: auto;">
                                             <button class="btn btn-success" onclick="addNewRow()">Add New Row</button>
-                                         </div>
+                                         </div> -->
                                      </div>
 
                                      <div id="newRow"></div>
                                      <div class="row mt-4">
-                                        <div class="col-md-3"  style="margin: auto;">
+                                        <div class="col-md-2"  style="margin: auto;">
                                             <button type="submit" class="btn btn-success">Save</button>
                                          </div>
                                      </div>
                                    
                                      
-                                 <!-- </form> -->
+                                 </form>
                                 <!-- </form> -->
                               
                             </div>
 
 
                             <!-- datatable -->
-                            <table id="example" class="table table-striped mt-4" style="width:100%">
+                            <table id="P" class="table table-striped mt-4" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>Event Type</th>
@@ -114,19 +114,8 @@
                                        
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Bhagatg</td>
-                                        <td>Street </td>
-                                        <td>
-                                           <p>10 - $10</p> 
-                                           <p>20 - $15</p>
-                                        </td>
-                                      
-                                        <td  data-toggle="modal" data-toggle="modal" data-target="#exampleModal"><span class="iconify" data-icon="bx:edit" style="    font-size: 20px;
-                                            color: blue;
-                                        cursor:pointer"></span></td>
-                                    </tr>
+                                <tbody id="priceListing">
+
                                 </tbody>
                              
                             </table>
@@ -169,46 +158,32 @@
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title" id="exampleModalLabel">Edit Prices</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button"   id="closeButtonModal" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
                           <!-- <form action="" method="post"> -->
                             <div class="row ">
-                                <div class="form-group col-md-4">
-                                    <small style="text-align: left; display: block;color: #7E8388">Select Event Type</small>
-                                    <select class="form-control " name="branch" id="Event_Type" required disabled>
-                                      <option value="">Select Event Type</option>
-                                    </select>
-                                  </div>
-                                  <div class="form-group col-md-4">
-                                    <small style="text-align: left; display: block;color: #7E8388">Select Venue</small>
-                                    <select class="form-control " name="venue" id="Venue" required disabled>
-                                      <option value="">Select Venue</option>
-                                    </select>
-                                  </div>
-                          
-                                  <div class="col-md-5 mt-4"  style="margin: auto;">
-                                    <button class="btn btn-success" onclick="addNewRowForEdit()">Add New Row</button>
-                                 </div>
+                              <input type="hidden" name="" id="pricePk">
+                              <span>Event Type : <span id="EditEventType"></span></span>
+                              <span>Venue : <span id="EditVenue"></span></span>
+                              <div class="form-group col-md-4">
+                                <small style="text-align: left; display: block;color: #7E8388">No of people</small>
+                                <input type="number" name="" id="EditNoOfPeople" required class="form-control">
+                              </div>
+                              <div class="form-group col-md-4">
+                                <small style="text-align: left; display: block;color: #7E8388">Amount</small>
+                                <input type="number" name="" id="EditPrice" required class="form-control">
+                              </div>
+
+                              <div class="col-md-3 mt-3"  style="margin: auto;">
+                                <button class="btn btn-success" onclick="updatePrice()" >Update</button>
+                             </div>
                              
                              </div>
-                             <div class="row mt-4">
-                                <div class="form-group col-md-4">
-                                    <small style="text-align: left; display: block;color: #7E8388">No of people</small>
-                                    <input type="number" name="no_of_people" id="" required class="form-control">
-                                  </div>
-                                  <div class="form-group col-md-4">
-                                    <small style="text-align: left; display: block;color: #7E8388">Amount</small>
-                                    <input type="number" name="amount" id="" required class="form-control">
-                                  </div>
-                                  <div class="col-md-3 mt-3"  style="margin: auto;">
-                                    <button class="btn btn-success" >Update</button>
-                                 </div>
-                             </div>
 
-                             <div id="editnewRow"></div>
+
                              
             </div>
             <!-- <div class="modal-footer">
@@ -218,15 +193,23 @@
           </div>
         </div>
       </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+      <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+      <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+
+      <script src="/static/js/service.js"></script>
+
     <script>
-        $(document).ready(function() {
+var token = '{{csrf_token}}';
+
+$(document).ready(function() {
     $('#example').DataTable();
+    
+    EventTypeDropDown('Event_Type_ID')
 } );
 
 let i=0;
@@ -261,6 +244,160 @@ function addNewRowForEdit(){
                                  </div>
                                           </div>`)
 }
+
+
+
+$('#Event_Type_ID').change( function(){
+
+  VenueDropDown('Venue_ID')
+
+})
+
+
+
+
+$('#Venue_ID').change( function(){
+
+  getPrices($('#Event_Type_ID').val(),$('#Venue_ID').val())
+
+})
+
+
+function getPrices(event_type,venue){
+    $.ajax({
+    type: "GET",
+    url: `/api/price/?event_type=${event_type}&venue=${venue}`,
+
+    success: function (response, textStatus, xhr) {
+      let price = JSON.parse(JSON.stringify(response));
+      console.log(price,'price');
+      $('#priceListing').html('')
+      if (xhr.status === 200) {
+          for (const {id,event_type,venue,estimation_price,no_of_participants} of price) {
+            $('#priceListing').append( ` <tr>
+                                        <td>${event_type}</td>
+                                        <td>${venue} </td>
+                                        <td>${no_of_participants}-${estimation_price}</td>
+                                        <td onclick="getPrice(${id})"  data-toggle="modal" data-toggle="modal" data-target="#exampleModal"><span class="iconify" data-icon="bx:edit" style="    font-size: 20px;
+                                            color: blue;
+                                        cursor:pointer"></span></td>
+                                    </tr>`)
+          }
+   
+      }
+    },
+    error: function (response, textStatus, xhr) {
+      let error;
+      var jsonarr = JSON.parse(JSON.stringify(response));
+      errorMessage(xhr, textStatus, response)
+    }
+  });
+ }
+
+
+
+ function getPrice(id){
+    $.ajax({
+    type: "GET",
+    url: `/api/price/?id=${id}`,
+
+    success: function (response, textStatus, xhr) {
+      let price = JSON.parse(JSON.stringify(response));
+      console.log(price,'price');
+    //   $('#venueListing').html('')
+      if (xhr.status === 200) {
+          for (const {id,event_type,venue,estimation_price,no_of_participants} of price) {
+            $('#pricePk').val(id)
+            $('#EditEventType').text(event_type)
+            $('#EditVenue').text(venue)
+            $('#EditPrice').val(estimation_price)
+            $('#EditNoOfPeople').val(no_of_participants)
+
+          }
+   
+      }
+    },
+    error: function (response, textStatus, xhr) {
+      let error;
+      var jsonarr = JSON.parse(JSON.stringify(response));
+      errorMessage(xhr, textStatus, response)
+    }
+  });
+ }
+
+
+ function updatePrice(){
+    event.preventDefault()
+    $.ajax({
+          headers: { "X-CSRFToken": token },
+          type: "PUT",
+          url: `/api/price/`,
+          data: {
+           id: $('#pricePk').val(),
+           no_of_participants:$('#EditNoOfPeople').val(),
+           estimation_price: $('#EditPrice').val(),
+
+          },
+          success: function (response, textStatus, xhr) {
+
+            var service = JSON.parse(JSON.stringify(response));
+            if (xhr.status === 200) {
+              toastr.success("Updated Successfully");
+              $('#closeButtonModal').trigger('click')
+              getPrices($('#Event_Type_ID').val(),$('#Venue_ID').val())
+            } else {
+              toastr.error("Something went wrong try later");
+
+            }
+          },
+          error: function (response, textStatus, xhr) {
+            let error;
+            var jsonarr = JSON.parse(JSON.stringify(response));
+            errorMessage(xhr, textStatus, response)
+
+          }
+
+        });
+}
+    
+
+$("#priceAdd").submit(function (event) {
+   
+   event.preventDefault();
+   var form = $(this);
+   var action = form.attr("action");
+   var data = form.serializeArray();
+   $.ajax({
+    headers: { "X-CSRFToken": token },
+     type: "POST",
+     url: "/api/price/",
+     dataType: 'json',
+     data: getFormData(data),
+     cache: false,
+     success: function (response, textStatus, xhr) {
+       var jsonarr = JSON.parse(JSON.stringify(response));
+
+       if (xhr.status === 200) {
+         toastr.success('Saved  Successfully');
+         getPrices($('#Event_Type_ID').val(),$('#Venue_ID').val())     
+        //  window.location='/dashboard'    
+        $('#priceAdd').trigger('reset')
+       } else {
+         toastr.error("SomeThing Went Wrong");
+       }
+     },
+     error: function (response, textStatus, xhr) {
+       let error;
+       var jsonarr = JSON.parse(JSON.stringify(response));
+       errorMessage(xhr, textStatus, response)
+      
+     }
+   });
+
+ });
+
+
+
     </script>
 </body>
 </html>
