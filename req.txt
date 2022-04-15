@@ -48,4 +48,8 @@ wcwidth==0.1.9
 
 
 
-djgdtgjdeueduiedui
+sqlparse==0.4.2
+termcolor==1.1.0
+urllib3==1.26.7
+virtualenv==20.13.1
+wcwidth==0.1.9
