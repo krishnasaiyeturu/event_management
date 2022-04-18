@@ -126,6 +126,7 @@
                                         <th>Duration</th>
                                         <th>No of people(less than or equal)</th>
                                         <th>Estimated Price($)</th>
+                                        <th>Final Price($)</th>
                                         <th>Status</th>
                                        
                                     </tr>
@@ -341,7 +342,7 @@ function getPrice(id){
       console.log(price,'price');
       $('#event_list').html('')
       if (xhr.status === 200) {
-          for (const {id,date_of_event,no_of_participants,status,duration,estimation_price,venue,event_type} of price) {
+          for (const {id,date_of_event,no_of_participants,status,duration,estimation_price,venue,event_type,final_price} of price) {
             $('#event_list').append( ` <tr>
                                         <td>${event_type}</td>
                                         <td>${venue} </td>
@@ -349,6 +350,7 @@ function getPrice(id){
                                         <td>${duration} </td>
                                         <td>${no_of_participants} </td>
                                         <td>${estimation_price} </td>
+                                        <td>${final_price}</td>
                                         <td>${status} </td>
                                     </tr>`)
           }

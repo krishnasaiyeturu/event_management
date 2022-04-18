@@ -76,3 +76,11 @@ class Event(models.Model):
        
     def __str__(self):
         return self.event_type.name
+
+
+class FinalPrice(models.Model):
+    event = models.ForeignKey(Event,on_delete=models.CASCADE)
+    price = models.PositiveIntegerField()
+       
+    def __str__(self):
+        return self.event.event_type.name

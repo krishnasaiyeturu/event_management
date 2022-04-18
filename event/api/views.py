@@ -1,7 +1,7 @@
 
 from functools import partial
 from django.db import transaction
-from event.api.serializers import CustomerSerializer, EstimatedPriceSerializer, EventManagerSerializer, EventSerializer, MainUserSerializer,EventTypeSerializer,VenueSerializer
+from event.api.serializers import CustomerSerializer, EstimatedPriceSerializer, EventManagerSerializer, EventSerializer, MainUserSerializer,EventTypeSerializer,VenueSerializer,FinalPriceSerializer
 from event.models import Customer, EstimatedPrice, Event, EventManager, EventType, Venue
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -250,3 +250,16 @@ class EventsAPIView(APIView):
             return Response({'sucess':'Price Updated Successfully'},status=HTTP_200_OK)
         else:
             raise NotFound(price_serializer.errors)	
+
+
+class FinalPriceAPIView(APIView):
+
+    def post(self,request,*args,**kwargs):
+        data = request.data	
+        print(data,'data final')
+        event_serializer = FinalPriceSerializer(data=data)
+        if event_serializer.is_valid():
+            cursor.execute("INSERT INTO event_finalprice(event_id,price) VALUES( %s,%s )", [data['event'],data['price']])
+            return Response({'sucess':'Price Created Successfully'},status=HTTP_200_OK)
+        else:
+            raise NotFound(event_serializer.errors)

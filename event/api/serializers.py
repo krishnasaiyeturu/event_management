@@ -1,6 +1,7 @@
 
 
 from django.db.models import fields
+from event.views import event
 from rest_framework import serializers
 from rest_framework.serializers import (
     CharField,
@@ -63,6 +64,12 @@ class VenueSerializer(ModelSerializer):
 
         fields = '__all__'
 
+class FinalPriceSerializer(ModelSerializer):
+    class Meta:
+        model = FinalPrice
+
+        fields = '__all__'
+
 
 class EstimatedPriceSerializer(ModelSerializer):
     class Meta:
@@ -88,4 +95,9 @@ class EventSerializer(ModelSerializer):
         response['venue'] = instance.venue.name +'-'+instance.venue.street+','+instance.venue.city+','+instance.venue.state
         response['event_type'] = instance.event_type.name
         response['customer'] = instance.customer.name
+        if FinalPrice.objects.filter(event=instance.id).exists():
+            response['final_price'] = FinalPrice.objects.filter(event=instance.id).values('price')[0]['price']
+        else:
+            response['final_price'] ='-----'
+
         return response

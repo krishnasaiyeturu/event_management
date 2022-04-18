@@ -47,6 +47,46 @@
        <div class="row " id="event_list">
 
        </div>
+
+
+       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel">Final Price</h4>
+              <button type="button"   id="closeButtonModal" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                          <!-- <form action="" method="post"> -->
+                            <form action="" method="post" id="finalPriceAdd">
+                            <div class="row ">
+                              <input type="hidden" name="event" id="eventPk">
+                            
+                              <div class="form-group col-md-4">
+                                <small style="text-align: left; display: block;color: #7E8388">Final Price</small>
+                                <input type="number" name="price" id="FinalPrice" required class="form-control">
+                              </div>
+           
+
+                              <div class="col-md-3 mt-3"  style="margin: auto;">
+                                <button type="submit" class="btn btn-success">Update</button>
+                             </div>
+                             
+                             </div>
+
+                            </form>
+                             
+            </div>
+            <!-- <div class="modal-footer">
+                <button class="btn btn-success">Save</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+
     </div>
   
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -94,7 +134,7 @@ function getEvent(status){
                     <div class="col-md-3"></div>
                     <div class="col-md-3">
 
-                      <button class="btn btn-success" onclick="statuschange('Accepted',${id})" > Accept</button>
+                      <button class="btn btn-success" onclick="accept(${id},${estimation_price})"  data-toggle="modal" data-toggle="modal" data-target="#exampleModal"> Accept</button>
                     </div>
                     <div class="col-md-3">
 
@@ -205,6 +245,48 @@ function getEvent(status){
  }
 
 
+
+ $("#finalPriceAdd").submit(function (event) {
+   
+   event.preventDefault();
+   var form = $(this);
+   var action = form.attr("action");
+   var data = form.serializeArray();
+   $.ajax({
+    headers: { "X-CSRFToken": token },
+     type: "POST",
+     url: "/api/final_price/",
+     dataType: 'json',
+     data: getFormData(data),
+     cache: false,
+     success: function (response, textStatus, xhr) {
+       var jsonarr = JSON.parse(JSON.stringify(response));
+
+       if (xhr.status === 200) {
+         toastr.success('Saved  Successfully');
+        //  getPrices($('#Event_Type_ID').val(),$('#Venue_ID').val())     
+        //  window.location='/dashboard'   
+        statuschange('Accepted',$('#eventPk').val()) 
+        $('#closeButtonModal').trigger('click')
+        $('#finalPriceAdd').trigger('reset')
+       } else {
+         toastr.error("SomeThing Went Wrong");
+       }
+     },
+     error: function (response, textStatus, xhr) {
+       let error;
+       var jsonarr = JSON.parse(JSON.stringify(response));
+       errorMessage(xhr, textStatus, response)
+      
+     }
+   });
+
+ });
+
+ function accept(id,price){
+   $('#eventPk').val(id)
+   $('#FinalPrice').val(price)
+ }
 </script>
 
 

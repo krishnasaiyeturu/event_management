@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^api/venue/',api_views.VenueAPIView.as_view()),
     url(r'^api/price/',api_views.EstimatedPriceAPIView.as_view()),
     url(r'^api/event/',api_views.EventsAPIView.as_view()),
-
+    url(r'^api/final_price/',api_views.FinalPriceAPIView.as_view()),
 
     
 ]
